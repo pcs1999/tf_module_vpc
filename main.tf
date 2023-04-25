@@ -17,5 +17,8 @@ resource "aws_vpc_peering_connection" "foo" {
   peer_owner_id = data.aws_caller_identity.current.account_id
   peer_vpc_id   = "vpc-0738d5702c63820c7"
   vpc_id        = aws_vpc.dev.id
+  tags = {
+    Name = "Dev-peering"
+  }
   auto_accept = true
 }
