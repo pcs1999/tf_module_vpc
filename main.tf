@@ -37,8 +37,8 @@ resource "aws_route" "default-vpc" {
 }
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.dev.id
 
-  tags = merge (local.common_tags, { Name = "${var.env}-subnet-${count.index + 2}" } )
+  tags = merge (local.common_tags, { Name = "${var.env}-igw}" } )
 
 }
