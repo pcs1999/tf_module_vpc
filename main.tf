@@ -15,10 +15,17 @@ resource "aws_subnet" "main-dev" {
 
 resource "aws_vpc_peering_connection" "foo" {
   peer_owner_id = data.aws_caller_identity.current.account_id
-  peer_vpc_id   = "vpc-0738d5702c63820c7"
+  peer_vpc_id   = var.default_vpc_id
   vpc_id        = aws_vpc.dev.id
   tags = {
-    Name = "Dev-peering"
+    Name = "${var.env}-peering"
   }
   auto_accept = true
+}
+
+resource "aws_route" "default" {
+  route_table_id            = aws_vpc.dev.default_route_table_id
+  destination_cidr_block    = "172.31.0.0/16"
+  vpc_peering_connection_id = aws_vpc_peering_connection.foo.id
+
 }
