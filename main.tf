@@ -55,6 +55,16 @@ resource "aws_internet_gateway" "igw" {
 
 }
 
+resource "aws_route_table_association" "pub_subnet-pub_rt" {
+  count          = length(aws_route_table.public)
+  subnet_id      = aws_subnet.public.*.id[count.index]
+  route_table_id = aws_route_table.bar.id
+
+}
+
+
+
+
 #//create  EC2 instance
 #provider "aws" {
 #  region = "us-east-1"
