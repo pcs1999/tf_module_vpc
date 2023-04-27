@@ -4,15 +4,22 @@ resource "aws_vpc" "dev" {
 }
 
 
-resource "aws_subnet" "main-dev" {
-  count      = length(var.subnets_cidr)
+resource "aws_subnet" "public" {
+  count      = length(var.public_subnets_cidr)
   vpc_id     = aws_vpc.dev.id
-  cidr_block = var.subnets_cidr[count.index]
+  cidr_block = var.public_subnets_cidr[count.index]
 
-  tags = merge (local.common_tags, { Name = "${var.env}-subnet-${count.index + 1}" } )
+  tags = merge (local.common_tags, { Name = "${var.env}-public-subnet-${count.index + 1}" } )
 
 }
+resource "aws_subnet" "private" {
+  count      = length(var.private_subnets_cidr)
+  vpc_id     = aws_vpc.dev.id
+  cidr_block = var.private_subnets_cidr[count.index]
 
+  tags = merge (local.common_tags, { Name = "${var.env}-private-subnet-${count.index + 1}" } )
+
+}
 resource "aws_vpc_peering_connection" "foo" {
   peer_owner_id = data.aws_caller_identity.current.account_id
   peer_vpc_id   = var.default_vpc_id
@@ -22,25 +29,26 @@ resource "aws_vpc_peering_connection" "foo" {
   auto_accept = true
 }
 
-resource "aws_route" "default" {
-  route_table_id            = aws_vpc.dev.default_route_table_id
-  destination_cidr_block    = "172.31.0.0/16"
-  vpc_peering_connection_id = aws_vpc_peering_connection.foo.id
+
+// CREATING THE PUBLIC AND PRIVATE ROUTE TABLES
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.dev.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  route {
+    cidr_block = data.aws_vpc.default.cidr_block
+    vpc_peering_connection_id = aws_vpc_peering_connection.foo.id
+  }
+
+  tags = merge (local.common_tags, { Name = "${var.env}-public_route_table" } )
 
 }
-resource "aws_route" "igw_route" {
-  route_table_id            = aws_vpc.dev.default_route_table_id
-  destination_cidr_block    = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.gw.id
-}
-resource "aws_route" "default-vpc" {
-  route_table_id            = data.aws_vpc.default.main_route_table_id
-  destination_cidr_block    = var.cidr_block
-  vpc_peering_connection_id = aws_vpc_peering_connection.foo.id
-
-}
-
-resource "aws_internet_gateway" "gw" {
+//creating a INTERNET_GATEWAY
+resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.dev.id
 
   tags = merge (local.common_tags, { Name = "${var.env}-igw" } )
