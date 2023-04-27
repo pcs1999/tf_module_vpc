@@ -110,7 +110,7 @@ resource "aws_route_table" "private" {
 
 // associating  private routing table to private subnet
 
-resource "aws_route_table_association" "pub_subnet-pub_rt" {
+resource "aws_route_table_association" "pri_subnet-pri_rt" {
   count          = length(aws_subnet.private)
   subnet_id      = aws_subnet.private.*.id[count.index]
   route_table_id = aws_route_table.private.id
