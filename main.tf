@@ -71,7 +71,6 @@ resource "aws_route_table_association" "pub_subnet-pub_rt" {
 
 // creating the ELASTIC_IP
 resource "aws_eip" "ngw-elastic" {
-  instance = aws_instance.web.id
   vpc      = true
 }
 
