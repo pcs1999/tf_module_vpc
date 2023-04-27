@@ -62,8 +62,22 @@ resource "aws_route_table_association" "pub_subnet-pub_rt" {
 
 }
 
+resource "aws_eip" "ngw-elastic" {
+  instance = aws_instance.web.id
+  vpc      = true
+}
+
+resource "aws_nat_gateway" "example" {
+  allocation_id = aws_eip.ngw-elastic.id
+  subnet_id     = aws_subnet.public.*.id[0]
+
+  tags = merge (local.common_tags, { Name = "${var.env}-NAT_GW" } )
 
 
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  //depends_on = [aws_internet_gateway.igw]
+}
 
 #//create  EC2 instance
 #provider "aws" {
