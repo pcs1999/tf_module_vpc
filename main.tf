@@ -9,16 +9,19 @@ resource "aws_subnet" "public" {
   count      = length(var.public_subnets_cidr)
   vpc_id     = aws_vpc.dev.id
   cidr_block = var.public_subnets_cidr[count.index]
+  availability_zone = var.availability_zones[count.index]
 
   tags = merge (local.common_tags, { Name = "${var.env}-public-subnet-${count.index + 1}" } )
 
 }
 
-// careting the private subnets
+// creating the private subnets
 resource "aws_subnet" "private" {
   count      = length(var.private_subnets_cidr)
   vpc_id     = aws_vpc.dev.id
   cidr_block = var.private_subnets_cidr[count.index]
+  availability_zone = var.availability_zones[count.index]
+
 
   tags = merge (local.common_tags, { Name = "${var.env}-private-subnet-${count.index + 1}" } )
 
@@ -155,6 +158,14 @@ resource "aws_security_group" "allow_tls" {
     description      = "TLS from VPC"
     from_port        = 22
     to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+
+  }
+  ingress {
+    description      = "HTTP"
+    from_port        = 80
+    to_port          = 80
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
 
