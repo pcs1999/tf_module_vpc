@@ -1,7 +1,7 @@
 // creating the VPC
 resource "aws_vpc" "dev_vpc" {
   cidr_block = var.cidr_block
-  tags       = merge (local.common_tags, { Name = "${var.env}-NVPC"})
+  tags       = merge (local.common_tags, { Name = "${var.env}-VPC"})
 }
 
 
