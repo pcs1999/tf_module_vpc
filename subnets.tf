@@ -12,5 +12,4 @@ module "subnets" {
 
   vpc_id                    = aws_vpc.dev_vpc.id
   vpc_peering_connection_id = aws_vpc_peering_connection.foo.id
-  tags                      = local.common_tags
 }
