@@ -25,3 +25,12 @@ resource "aws_route_table_association" "association" {
   subnet_id      = aws_subnet.main.*.id[count.index]
   route_table_id = aws_route_table.route_table.id
 }
+
+// creating a route to igw
+resource "aws_route" "gw_route" {
+  count = var.internet_gw == null ? 1 : 0
+  route_table_id = aws_route_table.route_table.id
+  destination_cidr_block    = "0.0.0.0/0"
+  gateway_id = var.gateway_id
+
+}

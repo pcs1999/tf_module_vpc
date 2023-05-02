@@ -34,5 +34,14 @@ resource "aws_route" "route" {
   vpc_peering_connection_id = aws_vpc_peering_connection.foo.id
 }
 
+//creating a INTERNET_GATEWAY
+
+resource "aws_internet_gateway" "igw" {
+
+  vpc_id = aws_vpc.dev_vpc.id
+
+  tags = merge (local.common_tags, { Name = "${var.env}-igw" } )
+
+}
 
 
