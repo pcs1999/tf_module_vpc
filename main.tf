@@ -19,15 +19,15 @@ resource "aws_vpc_peering_connection" "foo" {
 
 
 
-#// creating the ELASTIC_IP
-#resource "aws_eip" "ngw-elastic" {
-#  vpc      = true
-#}
+// creating the ELASTIC_IP
+resource "aws_eip" "ngw-elastic" {
+  vpc      = true
+}
 
 
 
 
-
+// creating a route to default RT to created cidr
 resource "aws_route" "route" {
   route_table_id            = data.aws_vpc.default.main_route_table_id
   destination_cidr_block    = var.cidr_block

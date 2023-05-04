@@ -7,6 +7,7 @@ variable "name" {}
 variable "vpc_peering_connection_id" {}
 variable "nat_gw" {}
 variable "internet_gw" {}
+variable "tags" {}
 variable "gateway_id" {
   default = null
 }

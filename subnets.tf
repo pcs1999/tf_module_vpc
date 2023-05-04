@@ -16,6 +16,7 @@ module "private_subnets" {
  internet_gw = lookup(each.value, "internet_gw" , false)
  nat_gw = lookup(each.value,"nat_gw",false )
   gateway_id   = aws_internet_gateway.igw.id
+  tags =local.common_tags
 #  nat_gw_id = aws_nat_gateway.NATGW.id
 
 
@@ -40,5 +41,6 @@ module "public_subnets" {
    nat_gw = lookup(each.value,"nat_gw",false )
 #  gateway_id   = aws_internet_gateway.igw.id
   nat_gw_id = aws_nat_gateway.NATGW.id
+  tags =local.common_tags
 
 }
