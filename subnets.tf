@@ -14,8 +14,10 @@ module "private_subnets" {
   vpc_peering_connection_id = aws_vpc_peering_connection.foo.id
 
  internet_gw = lookup(each.value, "internet_gw" , false)
-#  nat_gw = lookup(each.value,"nat_gw",false )
+ nat_gw = lookup(each.value,"nat_gw",false )
   gateway_id   = aws_internet_gateway.igw.id
+#  nat_gw_id = aws_nat_gateway.NATGW.id
+
 
 }
 
@@ -36,7 +38,7 @@ module "public_subnets" {
 
   internet_gw = lookup(each.value, "internet_gw" , false)
    nat_gw = lookup(each.value,"nat_gw",false )
-  gateway_id   = aws_internet_gateway.igw.id
+#  gateway_id   = aws_internet_gateway.igw.id
   nat_gw_id = aws_nat_gateway.NATGW.id
 
 }
