@@ -48,7 +48,7 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_nat_gateway" "NATGW" {
 
   allocation_id = aws_eip.ngw-elastic.id
-  subnet_id     = lookup(lookup(module.public_subnets, "public", null ), "subnet_ids", null )[0]
+  subnet_id     = lookup(lookup(module.public_subnets, "public", null ), "subnet_id", null )[0]
 
   tags = merge (local.common_tags, { Name = "${var.env}-NAT_GW" } )
 
