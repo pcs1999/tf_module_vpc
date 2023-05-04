@@ -1,5 +1,5 @@
-output "vpc_id" {
-  value = aws_vpc.dev_vpc.id
+output "subnet_id" {
+  value = aws_subnet.main.*.id
 }
 
 output "vpc_peering_connection_id" {
@@ -8,4 +8,8 @@ output "vpc_peering_connection_id" {
 
 output "public_subnets_ids" {
   value = module.public_subnets.subnet_id
+}
+
+output "one_subnet" {
+  value = module.public_subnets["public"]["subnet_ids"][0]
 }

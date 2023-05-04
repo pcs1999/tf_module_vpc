@@ -8,3 +8,4 @@ variable "vpc_peering_connection_id" {}
 #variable "nat_gw" {}
 variable "internet_gw" {}
 variable "gateway_id" {}
+
