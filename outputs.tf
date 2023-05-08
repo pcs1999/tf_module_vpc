@@ -9,3 +9,7 @@ output "vpc_peering_connection_id" {
 output "public_subnets_ids" {
   value = module.public_subnets
 }
+
+output "private_subnets_ids" {
+  value = module.private_subnets
+}
