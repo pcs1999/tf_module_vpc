@@ -16,6 +16,14 @@ resource "aws_route_table" "route_table" {
     vpc_peering_connection_id = var.vpc_peering_connection_id
   }
 
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to tags, e.g. because a management agent
+      # updates these based on some ruleset managed elsewhere.
+      route,
+    ]
+  }
+
   tags = merge(local.common_tags, { Name = "${var.env}-${var.name}-route_table"})
 }
 
